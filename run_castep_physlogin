@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Specify some options for QSUB
+#$ -V -j y -R y
+
+# Specify which queue
+#$ -q phys-lab
+
+# Execute script from current working directory
+#$ -cwd
+
+# Select max run-time (30 minutes)
+#$ -l h_rt=00:30:00
+
+# Select parallel environment to run on nn cores, max 16 cores/node
+# Ask for 2 nodes (32 cores)
+#$ -pe mpi-16 32
+#set same value here too
+NUM_CORES=32
+
+# Load the OpenMPI and CASTEP modules
+module load openmpi/3.1.2 castep/20.1
+EXEC=castep.mpi
+
+# Any additional arguments to pass to the executable
+ARGS=$@
+
+#set job running
+mpirun -np $NUM_CORES $EXEC $ARGS
