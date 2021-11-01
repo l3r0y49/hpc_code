@@ -3,7 +3,7 @@ program q0_ac2071
     integer,parameter       :: dp=selected_real_kind(15,300)
     real(kind=dp),parameter :: PI=4.d0*datan(1.d0)
     integer                 :: N,i, N_max
-    real(kind=dp)           :: pi_calc, prec=1E-13
+    real(kind=dp)           :: pi_calc, prec=1E-14
     logical                 :: found=.false.
     
     !set max value of N
@@ -46,4 +46,4 @@ program q0_ac2071
         print*,"No N found for precision threshold"
         print*, "Detection precision", prec
     endif
-endprogram 
+endprogram
