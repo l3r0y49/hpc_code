@@ -1,0 +1,1 @@
+g++ -Wall -Wextra -fopenmp -o openmp_hello_world.out openmp_hello_world.cpp 
