@@ -34,6 +34,4 @@ print*,"Time: ", end_time-start_time, "seconds"
 print*,"Threads: ", threads
 
 deallocate(array_N)
-
-
 endprogram
