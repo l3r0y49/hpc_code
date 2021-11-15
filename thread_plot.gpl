@@ -1,0 +1,37 @@
+#!/bin/bash
+set terminal postscript eps enhanced colour font "Helvetica" 16
+
+#=========================================================
+# plot
+#=========================================================
+
+set size 0.8,0.8
+set size ratio 0.7
+
+set mxtics 2
+set mytics 2
+
+# Set axis labels
+set xlabel "Threads"
+# For y-label use italics for variables and offset from axis
+set ylabel "Time (s)" 
+
+# Set key properties
+set key top left maxrows 2 spacing 1
+
+ofile="thread_plot"
+# Set eps file name and convert to pdf
+epsfile=ofile.".eps"
+set output epsfile
+
+#line styles
+set style line 1 ps 1 pt 1 lc 'red'
+
+set title "Multi-thread speedup"
+
+set key top right
+
+plot  "20_thread_results.dat" u 4:3 ls 1 title 'Runs'
+
+cmd = "epstopdf " .epsfile
+sys cmd

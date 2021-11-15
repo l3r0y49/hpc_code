@@ -26,7 +26,7 @@ FC = gfortran
 # Declare all the separate files in one as OBJ
 # These are the files created by fsplit and are what the executable depends on
 #
-OBJ = mod_setprecision.o fcc.o forces.o dfill.o domove.o dscal.o main.o \
+OBJ = mod_setprecision.o fcc.o forces_atomic.o dfill.o domove.o dscal.o main.o \
       mkekin.o mxwell.o prnout.o velavg.o random.o 
 #
 ##########################################################
