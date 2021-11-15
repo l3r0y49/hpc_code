@@ -40,6 +40,4 @@ print*,"Pong data: ",my_data,"from processor: ",myrank+1
 
 call MPI_Finalize(ierror)
 
-
-
 endprogram
