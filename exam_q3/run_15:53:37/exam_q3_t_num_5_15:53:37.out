@@ -1,6 +1,8 @@
- Thread           1  of           3
- Thread           2  of           3
- Thread           3  of           3
+ Thread           1  of           5
+ Thread           5  of           5
+ Thread           3  of           5
+ Thread           2  of           5
+ Thread           4  of           5
  after setup
            1           2           1           2
            2           4           4           4
@@ -11,11 +13,10 @@
  after test1
            1           4           1           2
            2           9           4           4
-           3          16           9           6
+           3          16           9          16
            4          25          16           8
            5          36          25          10
            6          12          36          12
- test1 time:    3.1270001272787340E-006 seconds
  after test2
            1           4           1           2
            2           9           4           4
@@ -23,7 +24,6 @@
            4          25          16          14
            5          22          25          22
            6          32          36          32
- test2 time:    2.8469999051594641E-006 seconds
  after test3
            1           2           1           2
            2           4           2           4
@@ -31,5 +31,3 @@
            4          14           6          14
            5          22          14          22
            6          32          10          32
- test3 time:    2.6249999791616574E-006 seconds
- total time:    8.5990000115998555E-006 seconds
