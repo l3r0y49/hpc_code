@@ -1,0 +1,48 @@
+#!/bin/bash
+set terminal postscript eps enhanced colour font "Helvetica" 16
+
+#=========================================================
+#M T plot
+#=========================================================
+
+set size 0.8,0.8
+set size ratio 0.7
+
+set mxtics 2
+set mytics 2
+
+N=100000
+
+# Set axis labels
+set xlabel "P"
+# For y-label use italics for variables and offset from axis
+set ylabel "P {/Symbol S}/N_{grid}" 
+
+set title "N_{grid}=".N
+
+# Set key properties
+set key top right maxrows 2 spacing 1
+
+#line styles
+set style line 1 ps 2 pt 1 lc 'red'
+set style line 2 ps 2 pt 1 lc 'blue'
+
+# Set output file base name
+ofile="Q4N=".N." "
+# Set eps file name and convert to pdf
+epsfile=ofile.".pdf"
+set output epsfile
+
+set yrange [-0.1:1.1]
+set xrange [-1:51]
+
+f(x)= 4 * 1/sqrt(N) * sqrt(x)
+g(x)= 2 * 1/sqrt(N) * x
+
+plot f(x)  ls 1 t "2D" ,\
+     g(x)  ls 2 t "1D"
+
+set out
+reset
+#reset settings
+set term x11
