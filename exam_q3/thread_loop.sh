@@ -1,7 +1,7 @@
 #!/bin/sh
 
-thread_list=$(seq 1 1 8)
-#thread_list=$(seq 1 1 4)
+# thread_list=$(seq 1 1 8)
+thread_list=$(seq 1 1 4)
 thread_count=0
 
 mkdir results/

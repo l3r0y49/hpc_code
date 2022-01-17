@@ -1,0 +1,36 @@
+ Thread           1  of           8
+ Thread           6  of           8
+ Thread           4  of           8
+ Thread           3  of           8
+ Thread           2  of           8
+ Thread           5  of           8
+ Thread           7  of           8
+ Thread           8  of           8
+ after setup
+           1           2           1           2
+           2           4           4           4
+           3           6           9           8
+           4           8          16          14
+           5          10          25          22
+           6          12          36          32
+ after test1
+           1           4           1           2
+           2           9           4           4
+           3          16           9           6
+           4          25          16           8
+           5          36          25          10
+           6          12          36          12
+ after test2
+           1           4           1           2
+           2           9           4           4
+           3          16           9           8
+           4          25          16          14
+           5          36          25          22
+           6          32          36          32
+ after test3
+           1           2           1           2
+           2           4           2           4
+           3           8           4           8
+           4          14           8          14
+           5          22          14          22
+           6          32          22          32

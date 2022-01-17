@@ -52,40 +52,47 @@ contains
   subroutine test1
     implicit none
     integer :: i
+    integer, dimension(1:N) :: tmp1=-1,tmp2=-1
 
-    !$OMP parallel do private(i) shared(a,b,c) schedule(static,chunk_size)
+    !$OMP parallel do private(i) shared(a,b,c,tmp1,tmp2) schedule(static,chunk_size)
     do i=2,N
-       a(i-1)=b(i)
-       c(i)=a(i)
+       tmp1(i-1)=b(i)
+       tmp2(i)=a(i)
     end do
     !$OMP end parallel do
-
+    where (tmp1/=-1) a=tmp1
+    where (tmp2/=-1) c=tmp2
   end subroutine test1
 
   subroutine test2
     implicit none
     integer :: i
-
-    !$OMP parallel do private(i) shared(a,b,c) schedule(static,chunk_size)
+    integer, dimension(1:N) :: tmp1=-1,tmp2=-1
+    
+    
+    !$OMP parallel do private(i) shared(a,b,c,tmp1,tmp2) schedule(static,chunk_size)
     do i=2,N
-       a(i-1)=b(i)
-       a(i)=c(i)
+       tmp2(i-1)=b(i)
+       tmp1(i)=c(i)
     end do
     !$OMP end parallel do
-
+    where (tmp1/=-1) a=tmp1
+    where (tmp2/=-1) a=tmp2
   end subroutine test2
 
   subroutine test3
     implicit none
     integer :: i
+    integer, dimension(1:N) :: tmp1=-1,tmp2=-1
 
-    !$OMP parallel do private(i) shared(a,b,c) schedule(static,chunk_size)
+    !$OMP parallel do private(i) shared(a,b,c,tmp1,tmp2) schedule(static,chunk_size)
     do i=2,N
-       b(i)=a(i-1)
-       a(i)=c(i)
+       tmp1(i)=c(i-1)
+       tmp2(i)=c(i)
     end do
     !$OMP end parallel do
-
+    where (tmp1/=-1) b=tmp1
+    where (tmp2/=-1) a=tmp2
   end subroutine test3
 
 end program Q3
