@@ -1,5 +1,5 @@
 #!/bin/sh
-rm -f poisson.in
+rm -f poisson_mpi.in
 
 #define properties
 
@@ -49,26 +49,31 @@ max_steps=100000
 accuraccy=0.0001
 
 #(MPI version)
-#threads=10
+thread_count=4
+
+export OMP_NUM_THREADS=$thread_count
 
 #create input file
-echo $debug >> poisson.in
-echo $specific_case_b >> poisson.in
-echo $a >> poisson.in
-echo $b >> poisson.in
-echo $q1 >> poisson.in
-echo $x1 >> poisson.in
-echo $y1 >> poisson.in
-echo $q2 >> poisson.in
-echo $x2 >> poisson.in
-echo $y2 >> poisson.in
-echo $h >> poisson.in
-echo $w >> poisson.in
-echo $max_steps >> poisson.in
-echo $accuraccy >> poisson.in
-echo $pgm_scale_factor >> poisson.in
+echo $debug >> poisson_mpi.in
+echo $specific_case_b >> poisson_mpi.in
+echo $a >> poisson_mpi.in
+echo $b >> poisson_mpi.in
+echo $q1 >> poisson_mpi.in
+echo $x1 >> poisson_mpi.in
+echo $y1 >> poisson_mpi.in
+echo $q2 >> poisson_mpi.in
+echo $x2 >> poisson_mpi.in
+echo $y2 >> poisson_mpi.in
+echo $h >> poisson_mpi.in
+echo $w >> poisson_mpi.in
+echo $max_steps >> poisson_mpi.in
+echo $accuraccy >> poisson_mpi.in
+echo $pgm_scale_factor >> poisson_mpi.in
+echo $threads >> poisson_mpi.in
 
 #poission SOR run
-./poisson_serial.exe < poisson.in
+./poisson_omp.exe < poisson_mpi.in
 
-rm -f poisson.in
+mv phi_print_b.pgm phi_print_b_threads_${thread_count}_h_${h}_w_${w}.pgm 
+
+rm -f poisson_mpi.in

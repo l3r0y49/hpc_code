@@ -1,8 +1,10 @@
 program poisson_serial
     use pgm, only : pgm_write, pgm_read
+    use omp_lib
+    use omp_lib_kinds
     implicit none
     integer,parameter                                   :: dp= selected_real_kind(15,300)
-    !halo size for sim space, used to provide halo for 1D sim-data decomposition
+    !halo size for sim space
     integer,parameter                                   :: halo=2
     !key system properties
     real(kind=dp)                                       :: h,a,b,q1,x1,y1,q2,x2,y2,w,accuracy_threshold,q_max,pgm_scale_factor
@@ -18,6 +20,19 @@ program poisson_serial
     logical                                             :: debug, converged, all_phi_updates_skipped, specific_case_b
     !pgm filename variables
     character(20)                                       :: out_file='phi_print.pgm',out_file_b='phi_print_b.pgm'
+   
+   !omp variables
+    integer                                             ::threads,my_thread=-1
+
+    !establish no of OMP threads
+    
+    !$OMP PARALLEL DEFAULT(PRIVATE)
+    threads = OMP_GET_NUM_THREADS()
+    my_thread=OMP_GET_THREAD_NUM()
+    if(debug.eqv..true.)then
+        print *,"Thread Num: ",threads+1," of",threads
+    endif
+    !$OMP END PARALLEL
 
     
     !read in parameters
@@ -75,6 +90,8 @@ program poisson_serial
             real(kind=dp)              :: updated_phi
             
             !boundary values left of of loops to maintian a grounded edge for the system
+            
+            !$OMP parallel do private(i,j) DEFAULT(PRIVATE) shared(a_int_length,b_int_length) schedule(dynamic)
             do i=2,a_int_length-1
                 do j=2,b_int_length-1
                     
@@ -94,6 +111,7 @@ program poisson_serial
 !                     endif
                 enddo
             enddo
+            !$OMP end parallel do
         
         endsubroutine 
     
@@ -154,7 +172,8 @@ program poisson_serial
             
             incrament= int(scale_factor)
             !iterate over sim space, sampling at the correct interval for pgm file
-                
+            
+            !$OMP parallel do private(i,j) shared(incrament,a_int_length,b_int_length) DEFAULT(PRIVATE) schedule(dynamic)
             do i=halo,a_int_length-incrament-halo/2,incrament
                 do j=halo,b_int_length-incrament-halo/2,incrament
                 
@@ -163,6 +182,7 @@ program poisson_serial
 
                 enddo
             enddo
+           !$OMP end parallel do
         endsubroutine
         
         real(kind=dp) function new_phi(old_phi,x_coord,y_coord)
