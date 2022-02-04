@@ -1,0 +1,121 @@
+w 1.00
+ System converged after:         1109  SOR cycles
+ r_A=    1.5740593882673521E-003
+ r_B=  -0.16872528120894709     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.05
+ System converged after:         1072  SOR cycles
+ r_A=    3.1293588131697746E-003
+ r_B=  -0.17963562782511394     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.10
+ System converged after:         1153  SOR cycles
+ r_A=    5.3558260398694282E-003
+ r_B=  -0.19291142366853722     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.15
+ System converged after:         1163  SOR cycles
+ r_A=    7.7371688328157912E-003
+ r_B=  -0.20640971080245391     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.20
+ System converged after:         1116  SOR cycles
+ r_A=    1.1023789915882867E-002
+ r_B=  -0.21960335476544016     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.25
+ System converged after:         1170  SOR cycles
+ r_A=    1.4709235054420122E-002
+ r_B=  -0.23330894216979547     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.30
+ System converged after:         1159  SOR cycles
+ r_A=    1.7995621196638757E-002
+ r_B=  -0.24825084651090876     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.35
+ System converged after:         1231  SOR cycles
+ r_A=    2.3367918709502875E-002
+ r_B=  -0.26357244228255927     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.40
+ System converged after:         1386  SOR cycles
+ r_A=    2.8432120511435933E-002
+ r_B=  -0.27998631773307597     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.45
+ System converged after:         1343  SOR cycles
+ r_A=    3.3744825947673682E-002
+ r_B=  -0.29498327546730418     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.50
+ System converged after:         1410  SOR cycles
+ r_A=    4.0897400718642292E-002
+ r_B=  -0.31382572905434558     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.55
+ System converged after:         1313  SOR cycles
+ r_A=    4.7156329559817280E-002
+ r_B=  -0.33117538759586718     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.60
+ System converged after:         1513  SOR cycles
+ r_A=    5.5359276558603364E-002
+ r_B=  -0.35039790188642261     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.65
+ System converged after:         1560  SOR cycles
+ r_A=    6.2871504226999247E-002
+ r_B=  -0.36901477126200938     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.70
+ System converged after:         1787  SOR cycles
+ r_A=    7.0380849925353303E-002
+ r_B=  -0.39002668273099217     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.75
+ System converged after:         1388  SOR cycles
+ r_A=    7.9921202023605670E-002
+ r_B=  -0.41155321302921016     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.80
+ System converged after:         1258  SOR cycles
+ r_A=    9.1782819436339397E-002
+ r_B=  -0.43620154670376743     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.85
+ System converged after:          970  SOR cycles
+ r_A=   0.10574771740980958     
+ r_B=  -0.46658410699081349     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.90
+ System converged after:          854  SOR cycles
+ r_A=   0.12650700672786760     
+ r_B=  -0.51126372950220855     
+ r_C=    0.0000000000000000     
+ plot complete
+w 1.95
+ System converged after:          596  SOR cycles
+ r_A=   0.16054543986839823     
+ r_B=  -0.57858112156538755     
+ r_C=    0.0000000000000000     
+ plot complete
+

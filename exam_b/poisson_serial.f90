@@ -2,7 +2,7 @@ program poisson_serial
     use pgm, only : pgm_write, pgm_read
     implicit none
     integer,parameter                                   :: dp= selected_real_kind(15,300)
-    real(kind=dp)                                       :: h,a,b,q1,x1,y1,q2,x2,y2,w,accuracy_threshold,q_max
+    real(kind=dp)                                       :: h,a,b,q1,x1,y1,q2,x2,y2,w,accuracy_threshold,q_max,pgm_scale_factor
     integer                                             :: N,max_steps,a_int_length,b_int_length
     integer                                             :: x1_int_location,y1_int_location,x2_int_location,y2_int_location
     real(kind=dp),allocatable,dimension(:,:)            :: box
@@ -24,7 +24,6 @@ program poisson_serial
     box(x1_int_location,y1_int_location) = q1
     box(x2_int_location,y2_int_location) = q2
     
-    
     !carry out SOR sycles untill convergence reached
     do N=1,max_steps
     
@@ -42,9 +41,7 @@ program poisson_serial
         if(all_phi_updates_skipped.eqv..true.)then
         
             !no changes to phi values, all at convergence, therefore SOR completed
-            if(debug.eqv..true.)then
-                print*, "System converged after: ",N," SOR cycles"
-            endif
+            print*, "System converged after: ",N," SOR cycles"
             converged=.true.
             exit
         endif
@@ -103,7 +100,6 @@ program poisson_serial
                 !convert real lengths and positions to integers
                 a_int_length = int(a*h)
                 b_int_length = int(b*h)
-                print*,b_int_length
                 x1_int_location = int(x1*h)
                 y1_int_location = int(y1*h)
                 x2_int_location = int(x2*h)
@@ -120,20 +116,23 @@ program poisson_serial
             endif
             
             !allocate int array for pgm output
-            allocate(int_box(a_int_length,b_int_length))
-    
-            !max grey value in pgm is 255, multiply by max charge value q_max/255 to increase constrast
             
-            !             print*, box(301,:)
-            print*, box(300,:)
-            print*,maxval(abs(box))
+            !set pgm size for file, max is 999x999 so need to scale down larger grids
+            allocate(int_box(int(a*h/pgm_scale_factor),int(b*h/pgm_scale_factor)))
             
+            !routine to do correctly scaled version of the below ,such that it does not go OOB for the pgm file
+            !int_box = int(box)
             box = box*128_dp/maxval(abs(box))+128_dp
             
-            print*, box(300,:)
+            call scale_to_int_array(pgm_scale_factor)
             
-             int_box = int(box)
-
+            !use direct array casting where pgm_scale_factor <=1 as scale_to_int_array routine is slow
+!             if(abs(pgm_scale_factor-1.0_dp)<=tiny(1.0_dp))then
+!                 int_box = int(box)
+!             else
+!                 call scale_to_int_array(pgm_scale_factor)
+!             endif
+            
             if(specific_case_b.eqv..true.)then
                 !write out to pgm file using pgm module from 2nd yr labs
                 call pgm_write(int_box,out_file_b)
@@ -145,7 +144,24 @@ program poisson_serial
             deallocate(int_box)
             
         endsubroutine
-    
+        
+        subroutine scale_to_int_array(scale_factor)
+            real(kind=dp),intent(in)   :: scale_factor
+            integer                    :: i,j,incrament
+            
+            incrament= int(scale_factor)
+            !iterate over sim space, sampling at the correct interval for pgm file
+                
+            do i=1,a_int_length-incrament,incrament
+                do j=1,b_int_length-incrament,incrament
+                
+                !max grey value in pgm is 255, multiply by max charge value q_max/255 to increase constrast
+                int_box(i/incrament+1,j/incrament+1) = int(box(i,j))
+
+                enddo
+            enddo
+        endsubroutine
+        
         real(kind=dp) function new_phi(old_phi,x_coord,y_coord)
             real(kind=dp), intent (in) ::  old_phi
             integer, intent (in)       :: x_coord,y_coord
@@ -196,6 +212,7 @@ program poisson_serial
             read(*,*,end=200,err=800) w
             read(*,*,end=200,err=800) max_steps
             read(*,*,end=200,err=800) accuracy_threshold
+            read(*,*,end=200,err=800) pgm_scale_factor
             
             !sucessful read
             return
@@ -226,6 +243,7 @@ program poisson_serial
                 print*, "w: ",w
                 print*, "max_steps: ",max_steps
                 print*, "accuracy_threshold: ",accuracy_threshold
+                print*, "pgm_scale_factor: ",pgm_scale_factor
             endif
             return
         endsubroutine check_input_values
