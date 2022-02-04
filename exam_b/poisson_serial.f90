@@ -27,6 +27,12 @@ program poisson_serial
     
     !carry out SOR sycles untill convergence reached
     do N=1,max_steps
+    
+        if(debug.eqv..true.)then
+            if(mod(N,1000_dp)==0)then
+                print*,N
+            endif
+        endif
         
         all_phi_updates_skipped=.true.
         
@@ -97,6 +103,7 @@ program poisson_serial
                 !convert real lengths and positions to integers
                 a_int_length = int(a*h)
                 b_int_length = int(b*h)
+                print*,b_int_length
                 x1_int_location = int(x1*h)
                 y1_int_location = int(y1*h)
                 x2_int_location = int(x2*h)
@@ -116,13 +123,17 @@ program poisson_serial
             allocate(int_box(a_int_length,b_int_length))
     
             !max grey value in pgm is 255, multiply by max charge value q_max/255 to increase constrast
-             int_box = int(q_max/255_dp*box)
-!             int_box = int(box)
             
-            print*, int_box(1,:)
-            print*, int_box(300,:)
-    
-    
+            !             print*, box(301,:)
+            print*, box(300,:)
+            print*,maxval(abs(box))
+            
+            box = box*128_dp/maxval(abs(box))+128_dp
+            
+            print*, box(300,:)
+            
+             int_box = int(box)
+
             if(specific_case_b.eqv..true.)then
                 !write out to pgm file using pgm module from 2nd yr labs
                 call pgm_write(int_box,out_file_b)

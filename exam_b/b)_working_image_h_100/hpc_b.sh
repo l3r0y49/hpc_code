@@ -35,7 +35,7 @@ y2=5.0
 h=100
 
 #convergence factor - MUST be 1 <=w< 2
-w=1.8
+w=1.9
 
 #Max iterations over box
 # max_steps=100000000
