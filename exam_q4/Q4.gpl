@@ -11,7 +11,7 @@ set size ratio 0.7
 set mxtics 2
 set mytics 2
 
-N=100000
+N=10000
 
 # Set axis labels
 set xlabel "P"
@@ -28,9 +28,9 @@ set style line 1 ps 2 pt 1 lc 'red'
 set style line 2 ps 2 pt 1 lc 'blue'
 
 # Set output file base name
-ofile="Q4N=".N." "
+ofile="Q4N=".N
 # Set eps file name and convert to pdf
-epsfile=ofile.".pdf"
+epsfile=ofile.".eps"
 set output epsfile
 
 set yrange [-0.1:1.1]
@@ -41,6 +41,10 @@ g(x)= 2 * 1/sqrt(N) * x
 
 plot f(x)  ls 1 t "2D" ,\
      g(x)  ls 2 t "1D"
+     
+# Convert eps to pdf for portability
+cmd = "epstopdf ".epsfile
+sys cmd
 
 set out
 reset

@@ -1,0 +1,5 @@
+gfortran -Wall -Wextra -fcheck=all -c pgm.f90 
+
+gfortran -Wall -Wextra -fcheck=all pgm.o -o poisson_serial.exe poisson_serial.f90
+
+./hpc_b.sh 
