@@ -2,13 +2,23 @@ program poisson_serial
     use pgm, only : pgm_write, pgm_read
     implicit none
     integer,parameter                                   :: dp= selected_real_kind(15,300)
+    !halo size for sim space
+    integer,parameter                                   :: halo=2
+    !key system properties
     real(kind=dp)                                       :: h,a,b,q1,x1,y1,q2,x2,y2,w,accuracy_threshold,q_max,pgm_scale_factor
+    !integer step counters and grid dimensions
     integer                                             :: N,max_steps,a_int_length,b_int_length
+    !integer locations on grid
     integer                                             :: x1_int_location,y1_int_location,x2_int_location,y2_int_location
+    !simulation space
     real(kind=dp),allocatable,dimension(:,:)            :: box
+    !iteger sim space representation less than 1000x1000
     integer,allocatable,dimension(:,:)                  :: int_box
+    !boolean flag variables
     logical                                             :: debug, converged, all_phi_updates_skipped, specific_case_b
+    !pgm filename variables
     character(20)                                       :: out_file='phi_print.pgm',out_file_b='phi_print_b.pgm'
+
     
     !read in parameters
     call read_in()
@@ -21,15 +31,15 @@ program poisson_serial
     !set inital simulation space conditions
     box=0.0_dp
     !place charges
-    box(x1_int_location,y1_int_location) = q1
-    box(x2_int_location,y2_int_location) = q2
+    box(x1_int_location+halo/2,y1_int_location+halo/2) = q1
+    box(x2_int_location+halo/2,y2_int_location+halo/2) = q2
     
     !carry out SOR sycles untill convergence reached
     do N=1,max_steps
     
         if(debug.eqv..true.)then
             if(mod(N,1000_dp)==0)then
-                print*,N
+                print*,"N: ",N
             endif
         endif
         
@@ -98,21 +108,21 @@ program poisson_serial
                 if (q2>q_max)q_max=q2
     
                 !convert real lengths and positions to integers
-                a_int_length = int(a*h)
-                b_int_length = int(b*h)
-                x1_int_location = int(x1*h)
-                y1_int_location = int(y1*h)
-                x2_int_location = int(x2*h)
-                y2_int_location = int(y2*h)
+                a_int_length = int(a*h)+halo
+                b_int_length = int(b*h)+halo
+                x1_int_location = int(x1*h)+halo/2
+                y1_int_location = int(y1*h)+halo/2
+                x2_int_location = int(x2*h)+halo/2
+                y2_int_location = int(y2*h)+halo/2
         endsubroutine
     
         subroutine pgm_out()
             
             if(specific_case_b.eqv..true.)then
                 !print out required coords
-                print*, "r_A= ",box(300,300)
-                print*, "r_B= ",box(150,450)
-                print*, "r_C= ",box(120,20)
+                print*, "r_A= ",box(int(3.0_dp*h)+halo/2,int(3.0_dp*h)+halo/2)
+                print*, "r_B= ",box(int(1.5_dp*h)+halo/2,int(4.5_dp*h)+halo/2)
+                print*, "r_C= ",box(int(1.2_dp*h)+halo/2,int(0.2_dp*h)+halo/2)
             endif
             
             !allocate int array for pgm output
@@ -125,13 +135,6 @@ program poisson_serial
             box = box*128_dp/maxval(abs(box))+128_dp
             
             call scale_to_int_array(pgm_scale_factor)
-            
-            !use direct array casting where pgm_scale_factor <=1 as scale_to_int_array routine is slow
-!             if(abs(pgm_scale_factor-1.0_dp)<=tiny(1.0_dp))then
-!                 int_box = int(box)
-!             else
-!                 call scale_to_int_array(pgm_scale_factor)
-!             endif
             
             if(specific_case_b.eqv..true.)then
                 !write out to pgm file using pgm module from 2nd yr labs
@@ -152,11 +155,11 @@ program poisson_serial
             incrament= int(scale_factor)
             !iterate over sim space, sampling at the correct interval for pgm file
                 
-            do i=1,a_int_length-incrament,incrament
-                do j=1,b_int_length-incrament,incrament
+            do i=halo,a_int_length-incrament-halo/2,incrament
+                do j=halo,b_int_length-incrament-halo/2,incrament
                 
                 !max grey value in pgm is 255, multiply by max charge value q_max/255 to increase constrast
-                int_box(i/incrament+1,j/incrament+1) = int(box(i,j))
+                int_box(i/incrament,j/incrament) = int(box(i,j))
 
                 enddo
             enddo

@@ -13,7 +13,7 @@
                 running_tot=running_tot+box(i,j)
                 
                 !at end of increament add average over last section of incrament
-                if(j==incrament)then
+                if(j==incrament.or.i==incrament)then
                     !max grey value in pgm is 255, multiply by max charge value q_max/255 to increase constrast
                     int_box(i/incrament+1,j/incrament+1) = int(running_tot/real(incrament))
                     running_tot=0.0_dp

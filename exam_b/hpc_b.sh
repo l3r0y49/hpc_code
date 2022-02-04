@@ -32,14 +32,14 @@ y2=4.6692016091029906
 #grid size/ resolution (number of array indexes per unit box size)
 # e.g. a*h = 4*100 box size = 400
 
-h=200
+h=100
 
 #scale factor must be chosen such that a*h/pgm_scale_factor & b*h/pgm_scale_factor < 100,
 #and both integers for correct .pgm production
-pgm_scale_factor=2
+pgm_scale_factor=1
 
 #convergence factor - MUST be 1 <=w< 2
-w=1.7
+w=1.6
 
 #Max iterations over box
 # max_steps=100000000

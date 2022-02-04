@@ -4,7 +4,7 @@ rm -f poisson.in
 #define properties
 
 #debug options
-debug=false
+debug=true
 specific_case_b=true
 
 #box dimensions
@@ -33,18 +33,21 @@ y2=4.6692016091029906
 # e.g. a*h = 4*100 box size = 400
 
 h=100
+# h_array=$(seq 10 10 90)
+h_array=$(seq 100 100 1000)
+
+echo $h_array
 
 #scale factor must be chosen such that a*h/pgm_scale_factor & b*h/pgm_scale_factor < 100,
 #and both integers for correct .pgm production
 pgm_scale_factor=1
 
 #convergence factor - MUST be 1 <=w< 2
-w=1.0
-w_array=$(seq 1.0 0.05 1.95)
+w=1.6
 
 #Max iterations over box
-# max_steps=100000000
-max_steps=100000
+max_steps=100000000
+# max_steps=1000000
 
 #accuracy degree for convergence 
 accuraccy=0.0001
@@ -52,8 +55,13 @@ accuraccy=0.0001
 #(MPI version)
 #threads=10
 
-for w in $w_array
-do
+for h in $h_array
+do  
+#     pgm_scale_factor=1
+    pgm_scale_factor=$((h/100))
+    
+    echo $h
+    echo $pgm_scale_factor
 
     #create input file
     echo $debug >> poisson.in
@@ -71,12 +79,12 @@ do
     echo $max_steps >> poisson.in
     echo $accuraccy >> poisson.in
     echo $pgm_scale_factor >> poisson.in
-    echo "w ${w}"
+    echo "h ${h}"
     
     #poission SOR run
-    ./poisson_serial.exe < poisson.in
+    ./poisson_serial.exe < poisson.in >> phi__b_h_test_100_w_${w}_10-4.log
 
-    mv phi_print_b.pgm w_tests/phi_print_b_h_${h}_w_${w}.pgm 
+    mv phi_print_b.pgm h_tests/phi_print_b_h_${h}_w_${w}.pgm 
 
     rm -f poisson.in
 done
